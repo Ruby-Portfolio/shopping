@@ -22,6 +22,11 @@ logging:
   level:
     org.hibernate.sql: debug
 
+jwt:
+  authoritiesKey: auth
+  secret: QmFja2VuZERldmVsb3BlclJ1YnlSYWJiaXRCYWNrZW5kRGV2ZWxvcGVyUnVieVJhYmJpdEJhY2tlbmREZXZlbG9wZXJSdWJ5UmFiYml0
+  expireTime: 300000
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
