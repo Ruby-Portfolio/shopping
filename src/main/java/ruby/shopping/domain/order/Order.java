@@ -1,6 +1,5 @@
 package ruby.shopping.domain.order;
 
-import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +8,10 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import ruby.shopping.domain.account.Account;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
-import static jakarta.persistence.FetchType.LAZY;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

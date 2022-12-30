@@ -1,6 +1,6 @@
 package ruby.shopping.domain.account;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,5 +39,9 @@ public class Account {
     public Account(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public void addAuthority(Authority authority) {
+        this.authorities.add(authority);
     }
 }

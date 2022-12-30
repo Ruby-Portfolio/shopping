@@ -1,14 +1,14 @@
 package ruby.shopping.domain.orderProduct;
 
-import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import ruby.shopping.domain.order.Order;
 import ruby.shopping.domain.product.Product;
 
-import static jakarta.persistence.FetchType.LAZY;
+import javax.persistence.*;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

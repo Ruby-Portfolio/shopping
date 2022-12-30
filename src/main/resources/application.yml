@@ -21,3 +21,8 @@ server:
 logging:
   level:
     org.hibernate.sql: debug
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    use-root-path: true
