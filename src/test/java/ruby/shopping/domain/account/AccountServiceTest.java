@@ -8,7 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ruby.shopping.domain.account.dtos.AccountLoginRequest;
 import ruby.shopping.domain.account.dtos.AccountSignUpRequest;
 import ruby.shopping.domain.account.exception.AccountExistsEmailException;
 
@@ -33,7 +32,12 @@ class AccountServiceTest {
     void signUp_existsEmail() {
         String email = "ruby@gmail.com";
         String password = "qwer1234!@";
-        BDDMockito.given(accountRepository.findByEmail(email)).willReturn(Optional.of(new Account()));
+        Account account = Account.builder()
+                        .email(email)
+                        .password(passwordEncoder.encode(password))
+                        .build();
+        BDDMockito.given(accountRepository.findByEmail(email))
+                .willReturn(Optional.of(account));
 
         AccountSignUpRequest accountSignUpRequest = new AccountSignUpRequest();
         accountSignUpRequest.setEmail(email);

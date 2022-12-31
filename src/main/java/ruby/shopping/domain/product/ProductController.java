@@ -12,14 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import ruby.shopping.common.ErrorResponse;
 import ruby.shopping.domain.account.Account;
 import ruby.shopping.domain.product.dtos.ProductCreateRequest;
-import ruby.shopping.domain.seller.dtos.SellerCreateRequest;
 import ruby.shopping.security.LoginAccount;
 
 import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/sellers")
+@RequestMapping("/api/products")
 public class ProductController {
 
     private final ProductService productService;
