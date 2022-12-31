@@ -1,6 +1,6 @@
 package ruby.shopping.domain.product;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import ruby.shopping.domain.seller.Seller;
 
 import java.time.LocalDateTime;
 
-import static jakarta.persistence.FetchType.*;
+import static javax.persistence.FetchType.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
