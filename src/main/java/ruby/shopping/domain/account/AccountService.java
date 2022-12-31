@@ -49,6 +49,22 @@ public class AccountService implements UserDetailsService {
         accountRepository.save(newAccount);
     }
 
+    @Transactional(readOnly = true)
+    public String login(AccountLoginRequest accountLoginRequest) {
+        UsernamePasswordAuthenticationToken authenticationToken
+                = new UsernamePasswordAuthenticationToken(accountLoginRequest.getEmail(), accountLoginRequest.getPassword());
+
+        try {
+            // authenticationToken 과 loadUserByUsername 에서 반환하는 User 객체와 비교
+            Authentication authentication = authenticationManagerBuilder.getObject()
+                    .authenticate(authenticationToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return jwtTokenProvider.createToken(accountLoginRequest.getEmail());
+        } catch (AuthenticationException e) {
+            throw new AccountNotFoundException();
+        }
+    }
+
     @Override
     public UserDetails loadUserByUsername(String email) {
         Account account =  accountRepository.findByEmail(email)
@@ -58,21 +74,6 @@ public class AccountService implements UserDetailsService {
                 .map(authority -> new SimpleGrantedAuthority("ROLE_" + authority.name()))
                 .collect(Collectors.toList());
 
-        return new AccountDetails(account.getEmail(), account.getPassword(), authorities);
-    }
-
-    @Transactional(readOnly = true)
-    public String login(AccountLoginRequest accountLoginRequest) {
-        UsernamePasswordAuthenticationToken authenticationToken
-                = new UsernamePasswordAuthenticationToken(accountLoginRequest.getEmail(), accountLoginRequest.getPassword());
-
-        try {
-            Authentication authentication = authenticationManagerBuilder.getObject()
-                    .authenticate(authenticationToken);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            return jwtTokenProvider.createToken(authentication);
-        } catch (AuthenticationException e) {
-            throw new AccountNotFoundException();
-        }
+        return new AccountDetails(account, authorities);
     }
 }

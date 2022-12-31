@@ -37,7 +37,8 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .anyRequest().permitAll();
+                .mvcMatchers("/signUp", "/login").permitAll()
+                .anyRequest().authenticated();
 
         // jwt 인증을 사용하므로 세션을 사용하지 않음
         http
