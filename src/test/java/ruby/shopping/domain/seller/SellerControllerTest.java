@@ -20,6 +20,7 @@ import ruby.shopping.domain.seller.dtos.SellerCreateRequest;
 import ruby.shopping.security.jwt.JwtFilter;
 import ruby.shopping.security.jwt.JwtTokenProvider;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -116,5 +117,7 @@ class SellerControllerTest {
                         .header(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + token)
                 )
                 .andExpect(status().isCreated());
+
+        assertThat(sellerRepository.count()).isEqualTo(1);
     }
 }
