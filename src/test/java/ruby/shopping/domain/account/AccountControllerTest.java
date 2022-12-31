@@ -113,7 +113,8 @@ class AccountControllerTest {
                         .contentType(APPLICATION_JSON)
                         .content(mapper.writeValueAsString(accountLoginRequest))
                 )
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(header().doesNotExist("Authorization"));
     }
 
     @Test

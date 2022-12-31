@@ -12,10 +12,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import ruby.shopping.domain.account.Account;
+import ruby.shopping.domain.account.AccountRepository;
+import ruby.shopping.domain.account.exception.AccountUnauthorizedException;
 import ruby.shopping.security.AccountDetails;
 
 import java.security.Key;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,27 +27,24 @@ public class JwtTokenProvider {
 
     private final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
     private final Key key;
-    @Value("${jwt.authoritiesKey}")
-    private String authoritiesKey;
     @Value("${jwt.expireTime}")
     private Integer expireTime;
+    public final AccountRepository accountRepository;
 
-    public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
+    public JwtTokenProvider(
+            @Value("${jwt.secret}") String secretKey,
+            AccountRepository accountRepository) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.accountRepository = accountRepository;
     }
 
-    /** 유저 정보를 가지고 Token 을 생성 */
-    public String createToken(Authentication authentication) {
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
-
+    /** 유저 이메일 정보를 가지고 Token 을 생성 */
+    public String createToken(String email) {
         long now = (new Date()).getTime();
         Date tokenExpiresIn = new Date(now + expireTime);
         return Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim(authoritiesKey, authorities)
+                .setSubject(email)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(tokenExpiresIn)
                 .compact();
@@ -61,19 +60,16 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
 
-        if (claims.get(authoritiesKey) == null) {
-            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
-        }
+        // 토큰에서 얻은 이메일로 사용자 정보 조회
+        String email = claims.getSubject();
+        Account account = accountRepository.findByEmail(email)
+                .orElseThrow(AccountUnauthorizedException::new);
 
-        // 클레임에서 권한 정보 가져오기
-        List<GrantedAuthority> authorities =
-                Arrays.stream(claims.get(authoritiesKey).toString().split(","))
-                        .map(authority -> new SimpleGrantedAuthority("ROLE_" + authority))
-                        .collect(Collectors.toList());
+        List<GrantedAuthority> authorities = account.getAuthorities().stream()
+                .map(authority -> new SimpleGrantedAuthority("ROLE_" + authority.name()))
+                .collect(Collectors.toList());
 
-        // UserDetails 객체를 만들어서 Authentication 리턴
-        AccountDetails principal = new AccountDetails(claims.getSubject(), "", authorities);
-        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+        return new UsernamePasswordAuthenticationToken(new AccountDetails(account, authorities), "", authorities);
     }
 
     /** 토큰 유효성 검증 */
