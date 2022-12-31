@@ -8,10 +8,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ruby.shopping.common.ErrorResponse;
 import ruby.shopping.domain.account.Account;
 import ruby.shopping.domain.seller.dtos.SellerCreateRequest;
+import ruby.shopping.security.AccountDetails;
 import ruby.shopping.security.LoginAccount;
 
 import javax.validation.Valid;

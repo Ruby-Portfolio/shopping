@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import ruby.shopping.domain.account.Account;
 import ruby.shopping.domain.account.AccountRepository;
 import ruby.shopping.domain.account.exception.AccountUnauthorizedException;
+import ruby.shopping.security.AccountDetails;
 
 import java.security.Key;
 import java.util.Date;
@@ -68,7 +69,7 @@ public class JwtTokenProvider {
                 .map(authority -> new SimpleGrantedAuthority("ROLE_" + authority.name()))
                 .collect(Collectors.toList());
 
-        return new UsernamePasswordAuthenticationToken(account.getEmail(), account.getPassword(), authorities);
+        return new UsernamePasswordAuthenticationToken(new AccountDetails(account, authorities), "", authorities);
     }
 
     /** 토큰 유효성 검증 */
