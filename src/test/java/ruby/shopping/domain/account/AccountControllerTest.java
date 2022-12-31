@@ -13,14 +13,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import ruby.shopping.common.ExceptionController;
 import ruby.shopping.common.valid.EmailPattern;
 import ruby.shopping.common.valid.PasswordPattern;
+import ruby.shopping.domain.account.dtos.AccountLoginRequest;
 import ruby.shopping.domain.account.dtos.AccountSignUpRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -35,12 +34,12 @@ class AccountControllerTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    String email = "test@gmail.com";
+    String password = "1234qwer!@";
     Account existsAccount;
 
     @BeforeEach
     void before() {
-        String email = "test@gmail.com";
-        String password = "1234qwer!@";
         existsAccount = Account.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
@@ -75,7 +74,7 @@ class AccountControllerTest {
     @DisplayName("중복된 이메일로 회원가입 요청시 409 응답")
     void signUp_duplicate() throws Exception {
         AccountSignUpRequest accountSignUpRequest = new AccountSignUpRequest();
-        accountSignUpRequest.setEmail(existsAccount.getEmail());
+        accountSignUpRequest.setEmail(email);
         accountSignUpRequest.setPassword("qwer1234!@");
 
         mockMvc.perform(post("/signUp")
@@ -101,5 +100,34 @@ class AccountControllerTest {
         Account savedAccount = accountRepository.findByEmail(accountSignUpRequest.getEmail()).orElseThrow();
         assertThat(savedAccount.getEmail()).isEqualTo(accountSignUpRequest.getEmail());
         assertThat(passwordEncoder.matches(accountSignUpRequest.getPassword(), savedAccount.getPassword())).isTrue();
+    }
+
+    @Test
+    @DisplayName("이메일과 비밀번호가 일치하는 계정을 찾을 수 없을 경우 404 응답")
+    void login_notFound() throws Exception {
+        AccountLoginRequest accountLoginRequest = new AccountLoginRequest();
+        accountLoginRequest.setEmail(email);
+        accountLoginRequest.setPassword("qwer1234!@213");
+
+        mockMvc.perform(post("/login")
+                        .contentType(APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(accountLoginRequest))
+                )
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("이메일과 비밀번호가 일치하는 계정이 있을 경우 로그인 성공")
+    void login_success() throws Exception {
+        AccountLoginRequest accountLoginRequest = new AccountLoginRequest();
+        accountLoginRequest.setEmail(email);
+        accountLoginRequest.setPassword(password);
+
+        mockMvc.perform(post("/login")
+                        .contentType(APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(accountLoginRequest))
+                )
+                .andExpect(status().isOk())
+                .andExpect(header().exists("Authorization"));
     }
 }
