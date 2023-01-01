@@ -3,9 +3,9 @@ package ruby.shopping.domain.account;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ruby.shopping.domain.account.dtos.AccountSignUpRequest;
@@ -36,8 +36,8 @@ class AccountServiceTest {
                         .email(email)
                         .password(passwordEncoder.encode(password))
                         .build();
-        BDDMockito.given(accountRepository.findByEmail(email))
-                .willReturn(Optional.of(account));
+        Mockito.when(accountRepository.findByEmail(email))
+                .thenReturn(Optional.of(account));
 
         AccountSignUpRequest accountSignUpRequest = new AccountSignUpRequest();
         accountSignUpRequest.setEmail(email);
@@ -52,7 +52,7 @@ class AccountServiceTest {
     void signUp_success() {
         String email = "ruby@gmail.com";
         String password = "qwer1234!@";
-        BDDMockito.given(accountRepository.findByEmail(email)).willReturn(Optional.empty());
+        Mockito.when(accountRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         AccountSignUpRequest accountSignUpRequest = new AccountSignUpRequest();
         accountSignUpRequest.setEmail(email);
