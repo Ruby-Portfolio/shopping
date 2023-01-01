@@ -1,4 +1,4 @@
-package ruby.shopping.domain.order;
+package ruby.shopping.domain.orderProduct;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -7,9 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ruby.shopping.domain.account.Account;
+import ruby.shopping.domain.order.Order;
 import ruby.shopping.domain.order.dtos.OrderCreateRequest;
-import ruby.shopping.domain.orderProduct.OrderProductRepository;
 import ruby.shopping.domain.product.Product;
 import ruby.shopping.domain.product.ProductRepository;
 import ruby.shopping.domain.product.exception.ProductNotFoundException;
@@ -21,22 +20,20 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(MockitoExtension.class)
-class OrderServiceTest {
+class OrderProductServiceTest {
 
-    @Mock
-    OrderRepository orderRepository;
     @Mock
     OrderProductRepository orderProductRepository;
     @Mock
     ProductRepository productRepository;
 
     @InjectMocks
-    OrderService orderService;
+    OrderProductService orderProductService;
 
     @Test
     @DisplayName("상품 정보를 찾을 수 없을 경우 ProductNotFoundException 예외 처리")
-    void createOrder_notFoundProduct() {
-        Account account = new Account("", "");
+    void addOrderProductByOrder_notFoundProduct() {
+        Order order = Order.builder().build();
         List<Long> productIds = List.of(1L, 2L);
         List<OrderCreateRequest.OrderProductDto> orderProductDtos = productIds.stream()
                 .map(id -> {
@@ -51,15 +48,15 @@ class OrderServiceTest {
         Mockito.when(productRepository.findAllById(productIds))
                 .thenReturn(List.of(Product.builder().id(1L).build()));
 
-        assertThatThrownBy(() -> orderService.createOrder(orderCreateRequest, account))
+        assertThatThrownBy(() -> orderProductService.addOrderProductByOrder(orderProductDtos, order))
                 .isInstanceOf(ProductNotFoundException.class);
     }
 
 
     @Test
-    @DisplayName("주문 등록 성공")
-    void createOrder_success() {
-        Account account = new Account("", "");
+    @DisplayName("주문상품 추가 성공")
+    void addOrderProductByOrder_success() {
+        Order order = Order.builder().build();
         List<Long> productIds = List.of(1L, 2L);
         List<OrderCreateRequest.OrderProductDto> orderProductDtos = productIds.stream()
                 .map(id -> {
@@ -74,7 +71,7 @@ class OrderServiceTest {
         Mockito.when(productRepository.findAllById(productIds))
                 .thenReturn(List.of(Product.builder().id(1L).build(), Product.builder().id(2L).build()));
 
-        assertThatCode(() -> orderService.createOrder(orderCreateRequest, account))
+        assertThatCode(() -> orderProductService.addOrderProductByOrder(orderProductDtos, order))
                 .doesNotThrowAnyException();
     }
 }
