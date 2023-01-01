@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import ruby.shopping.domain.account.Account;
+import ruby.shopping.domain.order.enums.OrderState;
 import ruby.shopping.domain.orderProduct.OrderProduct;
 
 import javax.persistence.*;
@@ -31,6 +32,9 @@ public class Order {
     private LocalDateTime createAt;
     @LastModifiedDate
     private LocalDateTime updateAt;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OrderState orderState;
 
     @ManyToOne(fetch = LAZY)
     private Account account;
@@ -38,7 +42,12 @@ public class Order {
     private final List<OrderProduct> orderProducts = new ArrayList<>();
 
     @Builder
-    public Order(Account account) {
+    public Order(OrderState orderState, Account account) {
         this.account = account;
+        this.orderState = orderState;
+    }
+
+    public void updateState(OrderState orderState) {
+        this.orderState = orderState;
     }
 }

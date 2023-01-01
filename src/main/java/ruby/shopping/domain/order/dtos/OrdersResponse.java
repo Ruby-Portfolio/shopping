@@ -6,7 +6,6 @@ import ruby.shopping.domain.order.Order;
 import ruby.shopping.domain.orderProduct.OrderProduct;
 import ruby.shopping.domain.product.Product;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +27,7 @@ public class OrdersResponse {
         private Long productId;
         private String createAt;
         private List<OrderProductDto> orderProducts;
+        private Integer totalPrice;
 
         private OrderDto(Order order) {
             this.productId = order.getId();
@@ -35,6 +35,9 @@ public class OrdersResponse {
             this.orderProducts = order.getOrderProducts().stream()
                     .map(OrderProductDto::new)
                     .collect(Collectors.toList());
+            this.totalPrice = orderProducts.stream()
+                    .mapToInt(orderProduct -> orderProduct.count * orderProduct.price)
+                    .sum();
         }
     }
 
@@ -46,6 +49,7 @@ public class OrdersResponse {
         private Integer count;
         private Long productId;
         private String productName;
+        private Integer price;
 
         private OrderProductDto(OrderProduct orderProduct) {
             this.orderProductId = orderProduct.getId();
@@ -54,6 +58,7 @@ public class OrdersResponse {
             Product product = orderProduct.getProduct();
             this.productId = product.getId();
             this.productName = product.getName();
+            this.price = product.getPrice();
         }
     }
 }

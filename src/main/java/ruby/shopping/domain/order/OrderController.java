@@ -1,6 +1,7 @@
 package ruby.shopping.domain.order;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -55,7 +56,7 @@ public class OrderController {
     @SecurityRequirement(name = "Bearer Authorization")
     @ApiResponses(value = {
             @ApiResponse(
-                    responseCode = "201",
+                    responseCode = "200",
                     description = "주문 목록 조회 성공"
             )
     })
@@ -64,5 +65,26 @@ public class OrderController {
     public OrdersResponse getOrders(@LoginAccount Account account) {
         List<Order> orders = orderService.getOrders(account);
         return new OrdersResponse(orders);
+    }
+
+    @Operation(summary = "주문 취소")
+    @SecurityRequirement(name = "Bearer Authorization")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "주문 취소 성공"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "주문 정보를 찾을 수 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{orderId}")
+    public void patchOrder(
+            @PathVariable @Parameter(name = "orderId", description = "주문 아이디") Long orderId,
+            @LoginAccount Account account) {
+        orderService.cancelOrder(orderId, account);
     }
 }

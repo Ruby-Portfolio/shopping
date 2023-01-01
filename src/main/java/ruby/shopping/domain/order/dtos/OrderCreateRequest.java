@@ -3,6 +3,7 @@ package ruby.shopping.domain.order.dtos;
 import lombok.Getter;
 import lombok.Setter;
 import ruby.shopping.common.valid.OrderProductPattern;
+import ruby.shopping.common.valid.OrderStatePattern;
 
 import java.util.List;
 
@@ -10,6 +11,8 @@ import java.util.List;
 @Setter
 public class OrderCreateRequest {
 
+    @OrderStatePattern
+    private String orderState;
     @OrderProductPattern
     private List<OrderProductDto> orderProducts;
 

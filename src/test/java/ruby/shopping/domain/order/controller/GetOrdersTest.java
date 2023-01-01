@@ -15,6 +15,7 @@ import ruby.shopping.domain.account.Account;
 import ruby.shopping.domain.account.AccountRepository;
 import ruby.shopping.domain.order.Order;
 import ruby.shopping.domain.order.OrderRepository;
+import ruby.shopping.domain.order.enums.OrderState;
 import ruby.shopping.domain.orderProduct.OrderProduct;
 import ruby.shopping.domain.orderProduct.OrderProductRepository;
 import ruby.shopping.domain.product.Product;
@@ -93,6 +94,7 @@ class GetOrdersTest {
 
         order = Order.builder()
                 .account(account)
+                .orderState(OrderState.PAYMENT_WAITING)
                 .build();
         orderRepository.save(order);
 
@@ -136,9 +138,11 @@ class GetOrdersTest {
                 .andExpect(jsonPath("$.orders[0].productId").value(product.getId()))
                 .andExpect(jsonPath("$.orders[0].createAt")
                         .value(product.getCreateAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+                .andExpect(jsonPath("$.orders[0].totalPrice").value(product.getPrice() * orderProduct.getCount()))
                 .andExpect(jsonPath("$.orders[0].orderProducts[0].orderProductId").value(orderProduct.getId()))
                 .andExpect(jsonPath("$.orders[0].orderProducts[0].count").value(orderProduct.getCount()))
                 .andExpect(jsonPath("$.orders[0].orderProducts[0].productId").value(product.getId()))
-                .andExpect(jsonPath("$.orders[0].orderProducts[0].productName").value(product.getName()));
+                .andExpect(jsonPath("$.orders[0].orderProducts[0].productName").value(product.getName()))
+                .andExpect(jsonPath("$.orders[0].orderProducts[0].price").value(product.getPrice()));
     }
 }

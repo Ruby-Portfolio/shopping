@@ -13,10 +13,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import ruby.shopping.common.ExceptionController;
 import ruby.shopping.common.valid.OrderProductPattern;
+import ruby.shopping.common.valid.OrderStatePattern;
 import ruby.shopping.domain.account.Account;
 import ruby.shopping.domain.account.AccountRepository;
 import ruby.shopping.domain.order.OrderRepository;
 import ruby.shopping.domain.order.dtos.OrderCreateRequest;
+import ruby.shopping.domain.order.enums.OrderState;
 import ruby.shopping.domain.orderProduct.OrderProductRepository;
 import ruby.shopping.domain.product.Product;
 import ruby.shopping.domain.product.ProductRepository;
@@ -127,6 +129,7 @@ class PostOrderTest {
         orderProductDto.setProductId(-1L);
         orderProductDto.setCount(0);
         OrderCreateRequest orderCreateRequest = new OrderCreateRequest();
+        orderCreateRequest.setOrderState("결제 불분명");
         orderCreateRequest.setOrderProducts(List.of(orderProductDto));
 
         mockMvc.perform(post("/api/orders")
@@ -136,6 +139,7 @@ class PostOrderTest {
                 )
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value(ExceptionController.BIND_EXCEPTION_MESSAGE))
+                .andExpect(jsonPath("$.validations.orderState").value(OrderStatePattern.MESSAGE))
                 .andExpect(jsonPath("$.validations.orderProducts").value(OrderProductPattern.MESSAGE));
     }
 
@@ -146,6 +150,7 @@ class PostOrderTest {
         orderProductDto.setProductId(product.getId() + 99);
         orderProductDto.setCount(1);
         OrderCreateRequest orderCreateRequest = new OrderCreateRequest();
+        orderCreateRequest.setOrderState(OrderState.PAYMENT_WAITING.name());
         orderCreateRequest.setOrderProducts(List.of(orderProductDto));
 
         mockMvc.perform(post("/api/orders")
@@ -164,6 +169,7 @@ class PostOrderTest {
         orderProductDto.setProductId(product.getId());
         orderProductDto.setCount(1);
         OrderCreateRequest orderCreateRequest = new OrderCreateRequest();
+        orderCreateRequest.setOrderState(OrderState.PAYMENT_WAITING.name());
         orderCreateRequest.setOrderProducts(List.of(orderProductDto));
 
         mockMvc.perform(post("/api/orders")
