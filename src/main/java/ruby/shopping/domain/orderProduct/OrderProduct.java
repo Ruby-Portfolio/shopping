@@ -21,7 +21,7 @@ public class OrderProduct {
     private Long id;
     private Integer count;
 
-    @OneToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY)
     private Product product;
     @ManyToOne(fetch = LAZY)
     private Order order;

@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import ruby.shopping.common.ErrorResponse;
 import ruby.shopping.domain.account.Account;
 import ruby.shopping.domain.order.dtos.OrderCreateRequest;
+import ruby.shopping.domain.order.dtos.OrdersResponse;
 import ruby.shopping.security.LoginAccount;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -47,5 +49,20 @@ public class OrderController {
             @RequestBody @Valid OrderCreateRequest orderCreateRequest,
             @LoginAccount Account account) {
         orderService.createOrder(orderCreateRequest, account);
+    }
+
+    @Operation(summary = "주문 목록 조회")
+    @SecurityRequirement(name = "Bearer Authorization")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "주문 목록 조회 성공"
+            )
+    })
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    public OrdersResponse getOrders(@LoginAccount Account account) {
+        List<Order> orders = orderService.getOrders(account);
+        return new OrdersResponse(orders);
     }
 }

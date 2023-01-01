@@ -8,6 +8,8 @@ import ruby.shopping.domain.order.dtos.OrderCancelRequest;
 import ruby.shopping.domain.order.dtos.OrderCreateRequest;
 import ruby.shopping.domain.orderProduct.OrderProductService;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -23,6 +25,10 @@ public class OrderService {
         orderRepository.save(order);
 
         orderProductService.addOrderProductByOrder(orderCreateRequest.getOrderProducts(), order);
+    }
+
+    public List<Order> getOrders(Account account) {
+        return orderRepository.findByAccountFetchOrderProduct(account);
     }
 
     public void cancelOrder(OrderCancelRequest orderCancelRequest, Account account) {}
