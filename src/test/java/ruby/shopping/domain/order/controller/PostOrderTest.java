@@ -1,4 +1,4 @@
-package ruby.shopping.domain.order;
+package ruby.shopping.domain.order.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -15,6 +15,7 @@ import ruby.shopping.common.ExceptionController;
 import ruby.shopping.common.valid.OrderProductPattern;
 import ruby.shopping.domain.account.Account;
 import ruby.shopping.domain.account.AccountRepository;
+import ruby.shopping.domain.order.OrderRepository;
 import ruby.shopping.domain.order.dtos.OrderCreateRequest;
 import ruby.shopping.domain.orderProduct.OrderProductRepository;
 import ruby.shopping.domain.product.Product;
@@ -36,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class OrderControllerTest {
+class PostOrderTest {
 
     @Autowired
     MockMvc mockMvc;

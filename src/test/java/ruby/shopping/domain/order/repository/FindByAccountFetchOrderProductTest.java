@@ -1,4 +1,4 @@
-package ruby.shopping.domain.order;
+package ruby.shopping.domain.order.repository;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Import;
 import ruby.shopping.TestQueryDslConfig;
 import ruby.shopping.domain.account.Account;
 import ruby.shopping.domain.account.AccountRepository;
+import ruby.shopping.domain.order.Order;
+import ruby.shopping.domain.order.OrderRepository;
 import ruby.shopping.domain.orderProduct.OrderProduct;
 import ruby.shopping.domain.orderProduct.OrderProductRepository;
 import ruby.shopping.domain.product.Product;
@@ -25,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @Import(TestQueryDslConfig.class)
-class OrderRepositoryTest {
+class FindByAccountFetchOrderProductTest {
 
     @Autowired
     OrderProductRepository orderProductRepository;

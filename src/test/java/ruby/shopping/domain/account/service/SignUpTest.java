@@ -1,4 +1,4 @@
-package ruby.shopping.domain.account;
+package ruby.shopping.domain.account.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,6 +8,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ruby.shopping.domain.account.Account;
+import ruby.shopping.domain.account.AccountRepository;
+import ruby.shopping.domain.account.AccountService;
 import ruby.shopping.domain.account.dtos.AccountSignUpRequest;
 import ruby.shopping.domain.account.exception.AccountExistsEmailException;
 
@@ -17,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(MockitoExtension.class)
-class AccountServiceTest {
+class SignUpTest {
 
     @Mock
     AccountRepository accountRepository;

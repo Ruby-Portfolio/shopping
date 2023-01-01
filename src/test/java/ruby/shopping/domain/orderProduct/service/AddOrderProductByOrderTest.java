@@ -1,4 +1,4 @@
-package ruby.shopping.domain.orderProduct;
+package ruby.shopping.domain.orderProduct.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,6 +9,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ruby.shopping.domain.order.Order;
 import ruby.shopping.domain.order.dtos.OrderCreateRequest;
+import ruby.shopping.domain.orderProduct.OrderProductRepository;
+import ruby.shopping.domain.orderProduct.OrderProductService;
 import ruby.shopping.domain.product.Product;
 import ruby.shopping.domain.product.ProductRepository;
 import ruby.shopping.domain.product.exception.ProductNotFoundException;
@@ -20,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(MockitoExtension.class)
-class OrderProductServiceTest {
+class AddOrderProductByOrderTest {
 
     @Mock
     OrderProductRepository orderProductRepository;
