@@ -1,6 +1,7 @@
 package ruby.shopping.domain.orderProduct;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ruby.shopping.domain.order.Order;
@@ -24,4 +25,11 @@ public class OrderProduct {
     private Product product;
     @ManyToOne(fetch = LAZY)
     private Order order;
+
+    @Builder
+    public OrderProduct(Integer count, Product product, Order order) {
+        this.count = count;
+        this.product = product;
+        this.order = order;
+    }
 }

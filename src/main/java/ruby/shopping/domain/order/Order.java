@@ -1,6 +1,7 @@
 package ruby.shopping.domain.order;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -30,4 +31,9 @@ public class Order {
 
     @ManyToOne(fetch = LAZY)
     private Account account;
+
+    @Builder
+    public Order(Account account) {
+        this.account = account;
+    }
 }

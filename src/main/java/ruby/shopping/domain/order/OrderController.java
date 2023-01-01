@@ -1,4 +1,4 @@
-package ruby.shopping.domain.product;
+package ruby.shopping.domain.order;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -11,41 +11,41 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ruby.shopping.common.ErrorResponse;
 import ruby.shopping.domain.account.Account;
-import ruby.shopping.domain.product.dtos.ProductCreateRequest;
+import ruby.shopping.domain.order.dtos.OrderCreateRequest;
 import ruby.shopping.security.LoginAccount;
 
 import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/products")
-public class ProductController {
+@RequestMapping("/api/orders")
+public class OrderController {
 
-    private final ProductService productService;
+    private final OrderService orderService;
 
-    @Operation(summary = "상품 등록")
+    @Operation(summary = "주문 등록")
     @SecurityRequirement(name = "Bearer Authorization")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
-                    description = "상품 등록 성공"
+                    description = "주문 등록 성공"
             ),
             @ApiResponse(
                     responseCode = "400",
-                    description = "상품 등록 요청값 오류",
+                    description = "주문 등록 요청값 오류",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "셀러의 정보를 찾을 수 없음",
+                    description = "상품 정보를 찾을 수 없음",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void postProduct(
-            @RequestBody @Valid ProductCreateRequest productCreateRequest,
+    public void postOrder(
+            @RequestBody @Valid OrderCreateRequest orderCreateRequest,
             @LoginAccount Account account) {
-        productService.createProduct(productCreateRequest, account);
+        orderService.createOrder(orderCreateRequest, account);
     }
 }
