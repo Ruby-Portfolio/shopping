@@ -1,13 +1,16 @@
-package ruby.shopping.domain.account;
+package ruby.shopping.domain.account.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ruby.shopping.domain.account.Account;
+import ruby.shopping.domain.account.AccountRepository;
+import ruby.shopping.domain.account.AccountService;
 import ruby.shopping.domain.account.dtos.AccountSignUpRequest;
 import ruby.shopping.domain.account.exception.AccountExistsEmailException;
 
@@ -17,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(MockitoExtension.class)
-class AccountServiceTest {
+class SignUpTest {
 
     @Mock
     AccountRepository accountRepository;
@@ -36,8 +39,8 @@ class AccountServiceTest {
                         .email(email)
                         .password(passwordEncoder.encode(password))
                         .build();
-        BDDMockito.given(accountRepository.findByEmail(email))
-                .willReturn(Optional.of(account));
+        Mockito.when(accountRepository.findByEmail(email))
+                .thenReturn(Optional.of(account));
 
         AccountSignUpRequest accountSignUpRequest = new AccountSignUpRequest();
         accountSignUpRequest.setEmail(email);
@@ -52,7 +55,7 @@ class AccountServiceTest {
     void signUp_success() {
         String email = "ruby@gmail.com";
         String password = "qwer1234!@";
-        BDDMockito.given(accountRepository.findByEmail(email)).willReturn(Optional.empty());
+        Mockito.when(accountRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         AccountSignUpRequest accountSignUpRequest = new AccountSignUpRequest();
         accountSignUpRequest.setEmail(email);

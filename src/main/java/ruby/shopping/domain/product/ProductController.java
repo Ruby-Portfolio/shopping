@@ -23,7 +23,7 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @Operation(summary = "상품 등록 등록")
+    @Operation(summary = "상품 등록")
     @SecurityRequirement(name = "Bearer Authorization")
     @ApiResponses(value = {
             @ApiResponse(
@@ -32,7 +32,7 @@ public class ProductController {
             ),
             @ApiResponse(
                     responseCode = "400",
-                    description = "셀러 등록 요청값 오류",
+                    description = "상품 등록 요청값 오류",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             ),
             @ApiResponse(

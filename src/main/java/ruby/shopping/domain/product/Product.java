@@ -1,6 +1,5 @@
 package ruby.shopping.domain.product;
 
-import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,9 +10,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import ruby.shopping.domain.product.enums.Category;
 import ruby.shopping.domain.seller.Seller;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
-import static javax.persistence.FetchType.*;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -42,7 +42,8 @@ public class Product {
     private Seller seller;
 
     @Builder
-    public Product(String name, String description, Integer price, Category category, Seller seller) {
+    public Product(Long id, String name, String description, Integer price, Category category, Seller seller) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;

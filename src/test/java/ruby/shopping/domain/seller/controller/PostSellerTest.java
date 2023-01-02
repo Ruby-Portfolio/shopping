@@ -1,4 +1,4 @@
-package ruby.shopping.domain.seller;
+package ruby.shopping.domain.seller.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -16,6 +16,7 @@ import ruby.shopping.common.valid.AccountNumberPattern;
 import ruby.shopping.common.valid.UsernamePattern;
 import ruby.shopping.domain.account.Account;
 import ruby.shopping.domain.account.AccountRepository;
+import ruby.shopping.domain.seller.SellerRepository;
 import ruby.shopping.domain.seller.dtos.SellerCreateRequest;
 import ruby.shopping.security.jwt.JwtFilter;
 import ruby.shopping.security.jwt.JwtTokenProvider;
@@ -28,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class SellerControllerTest {
+class PostSellerTest {
 
     @Autowired
     MockMvc mockMvc;
