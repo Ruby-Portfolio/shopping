@@ -43,3 +43,6 @@
     <img width="923" alt="image" src="https://user-images.githubusercontent.com/93859705/210195664-ece25cac-2d32-4a3d-8b75-1128abbbc34c.png">
     ![image](https://user-images.githubusercontent.com/93859705/210195754-499311f1-57cc-46fc-9d90-d4f81e10e479.png)
     *로그인 성공 응답으로 받은 토큰 값을 이후 요청에 적용*
+
+### 테스트 결과
+<img width="600" alt="image" src="https://user-images.githubusercontent.com/93859705/210197273-1062a8d8-a8d2-47ca-8ba3-979c8728511d.png">
