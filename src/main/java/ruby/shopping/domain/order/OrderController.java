@@ -48,7 +48,7 @@ public class OrderController {
     @PostMapping
     public void postOrder(
             @RequestBody @Valid OrderCreateRequest orderCreateRequest,
-            @LoginAccount Account account) {
+            @LoginAccount @Parameter(hidden = true) Account account) {
         orderService.createOrder(orderCreateRequest, account);
     }
 
@@ -62,7 +62,7 @@ public class OrderController {
     })
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public OrdersResponse getOrders(@LoginAccount Account account) {
+    public OrdersResponse getOrders(@LoginAccount @Parameter(hidden = true) Account account) {
         List<Order> orders = orderService.getOrders(account);
         return new OrdersResponse(orders);
     }
@@ -84,7 +84,7 @@ public class OrderController {
     @PatchMapping("/{orderId}")
     public void patchOrder(
             @PathVariable @Parameter(name = "orderId", description = "주문 아이디") Long orderId,
-            @LoginAccount Account account) {
+            @LoginAccount @Parameter(hidden = true) Account account) {
         orderService.cancelOrder(orderId, account);
     }
 }

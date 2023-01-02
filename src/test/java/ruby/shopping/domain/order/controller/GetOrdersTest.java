@@ -135,7 +135,7 @@ class GetOrdersTest {
                         .header(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + token)
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.orders[0].productId").value(product.getId()))
+                .andExpect(jsonPath("$.orders[0].orderId").value(order.getId()))
                 .andExpect(jsonPath("$.orders[0].createAt")
                         .value(product.getCreateAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
                 .andExpect(jsonPath("$.orders[0].totalPrice").value(product.getPrice() * orderProduct.getCount()))

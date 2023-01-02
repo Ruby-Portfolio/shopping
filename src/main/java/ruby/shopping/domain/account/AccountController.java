@@ -46,7 +46,7 @@ public class AccountController {
     })
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/signUp")
-    public void signup(@RequestBody @Valid AccountSignUpRequest accountSignUpRequest) {
+    public void signUp(@RequestBody @Valid AccountSignUpRequest accountSignUpRequest) {
         accountService.signUp(accountSignUpRequest);
     }
 

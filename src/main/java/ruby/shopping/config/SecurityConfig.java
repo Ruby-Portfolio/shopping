@@ -36,8 +36,9 @@ public class SecurityConfig {
         // 페이지 권한 설정
         http
                 .authorizeHttpRequests()
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+//                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .mvcMatchers("/signUp", "/login").permitAll()
+                .antMatchers("/v3/api-docs", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                 .anyRequest().authenticated();
 
         // jwt 인증을 사용하므로 세션을 사용하지 않음

@@ -1,6 +1,7 @@
 package ruby.shopping.domain.product;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -45,7 +46,7 @@ public class ProductController {
     @PostMapping
     public void postProduct(
             @RequestBody @Valid ProductCreateRequest productCreateRequest,
-            @LoginAccount Account account) {
+            @LoginAccount @Parameter(hidden = true) Account account) {
         productService.createProduct(productCreateRequest, account);
     }
 }
