@@ -1,11 +1,12 @@
 package ruby.shopping.domain.seller;
 
-import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ruby.shopping.domain.account.Account;
+
+import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -15,11 +16,11 @@ public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String sellerName;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 30)
     private String accountNumber;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String accountHolder;
 
     @ManyToOne(fetch = FetchType.LAZY)

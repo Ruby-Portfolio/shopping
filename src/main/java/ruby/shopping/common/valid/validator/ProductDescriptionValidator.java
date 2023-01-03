@@ -9,6 +9,6 @@ public class ProductDescriptionValidator implements ConstraintValidator<ProductD
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return !(value == null || value.isBlank());
+        return !(value == null || value.isBlank()) && (value.length() <= 5000);
     }
 }
