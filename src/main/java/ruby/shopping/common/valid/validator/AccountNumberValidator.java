@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class AccountNumberValidator implements ConstraintValidator<AccountNumberPattern, String> {
 
-    private static final String REGEXP = "^(\\d{11,})$";
+    private static final String REGEXP = "^(\\d{11,30})$";
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {

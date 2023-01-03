@@ -33,7 +33,7 @@ public class Order {
     @LastModifiedDate
     private LocalDateTime updateAt;
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private OrderState orderState;
 
     @ManyToOne(fetch = LAZY)
