@@ -24,14 +24,14 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String name;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 5000)
     private String description;
     @Column(nullable = false)
     private Integer price;
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
     private Category category;
     @CreatedDate
     private LocalDateTime createAt;
