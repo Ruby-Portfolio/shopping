@@ -53,6 +53,18 @@ public class ProductController {
         productService.createProduct(productCreateRequest, account);
     }
 
+    @Operation(summary = "상품 목록 검색 조회")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "상품 목록 검색 조회 성공"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "상품 목록 검색 조회 요청값 오류",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))
+            )
+    })
     @GetMapping
     public ProductsResponse getProducts(@Valid ProductSearchRequest productSearchRequest) {
         Page<Product> products = productService.getProducts(productSearchRequest);
