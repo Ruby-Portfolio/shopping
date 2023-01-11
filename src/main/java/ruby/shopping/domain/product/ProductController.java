@@ -8,14 +8,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ruby.shopping.common.ErrorResponse;
 import ruby.shopping.domain.account.Account;
 import ruby.shopping.domain.product.dtos.ProductCreateRequest;
+import ruby.shopping.domain.product.dtos.ProductSearchRequest;
+import ruby.shopping.domain.product.dtos.ProductsResponse;
 import ruby.shopping.security.LoginAccount;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,5 +52,12 @@ public class ProductController {
             @RequestBody @Valid ProductCreateRequest productCreateRequest,
             @LoginAccount @Parameter(hidden = true) Account account) {
         productService.createProduct(productCreateRequest, account);
+    }
+
+    @GetMapping
+    public ProductsResponse getProducts(
+            @RequestParam @Valid ProductSearchRequest productSearchRequest) {
+        Page<Product> products = productService.getProducts(productSearchRequest);
+        return new ProductsResponse(products);
     }
 }

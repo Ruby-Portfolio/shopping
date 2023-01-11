@@ -1,14 +1,18 @@
 package ruby.shopping.domain.product;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ruby.shopping.domain.account.Account;
 import ruby.shopping.domain.product.dtos.ProductCreateRequest;
+import ruby.shopping.domain.product.dtos.ProductSearchRequest;
 import ruby.shopping.domain.product.enums.Category;
 import ruby.shopping.domain.seller.Seller;
 import ruby.shopping.domain.seller.SellerRepository;
 import ruby.shopping.domain.seller.exception.SellerNotFoundException;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,5 +35,9 @@ public class ProductService {
                 .build();
 
         productRepository.save(product);
+    }
+
+    public Page<Product> getProducts(ProductSearchRequest productSearchRequest) {
+        return productRepository.findBySearch(productSearchRequest);
     }
 }
