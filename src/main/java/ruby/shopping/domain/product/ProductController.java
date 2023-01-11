@@ -19,7 +19,6 @@ import ruby.shopping.domain.product.dtos.ProductsResponse;
 import ruby.shopping.security.LoginAccount;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -55,8 +54,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ProductsResponse getProducts(
-            @RequestParam @Valid ProductSearchRequest productSearchRequest) {
+    public ProductsResponse getProducts(@Valid ProductSearchRequest productSearchRequest) {
         Page<Product> products = productService.getProducts(productSearchRequest);
         return new ProductsResponse(products);
     }

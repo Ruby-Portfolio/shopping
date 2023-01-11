@@ -29,7 +29,7 @@ public class ProductsResponse {
     @Getter
     static class ProductItem {
         @Schema(description = "상품 아이디")
-        private final Long id;
+        private final Long productId;
         @Schema(description = "상품명")
         private final String productName;
         @Schema(description = "상품 가격")
@@ -40,7 +40,7 @@ public class ProductsResponse {
         private final String sellerName;
 
         ProductItem(Product product) {
-            this.id = product.getId();
+            this.productId = product.getId();
             this.productName = product.getName();
             this.price = product.getPrice();
             this.category = product.getCategory().name();
