@@ -10,14 +10,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import ruby.shopping.domain.product.dtos.ProductSearchRequest;
 import ruby.shopping.domain.product.enums.Category;
-import ruby.shopping.domain.seller.QSeller;
 
 import java.util.List;
 
-import static ruby.shopping.domain.order.QOrder.order;
-import static ruby.shopping.domain.orderProduct.QOrderProduct.orderProduct;
 import static ruby.shopping.domain.product.QProduct.product;
-import static ruby.shopping.domain.seller.QSeller.*;
+import static ruby.shopping.domain.seller.QSeller.seller;
 
 @RequiredArgsConstructor
 public class ProductRepositoryImpl implements ProductRepositoryCustom{
@@ -30,7 +27,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
         Pageable pageable = PageRequest.of(page, pageSize);
 
         List<Product> products = jpaQueryFactory.selectFrom(product)
-                .leftJoin(seller, product.seller).fetchJoin()
+                .leftJoin(product.seller, seller).fetchJoin()
                 .where(getExpressionProductSearch(productSearchRequest))
                 .limit(pageSize)
                 .offset(pageable.getOffset())
@@ -38,7 +35,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
                 .fetch();
 
         JPAQuery<Product> countQuery = jpaQueryFactory.selectFrom(product)
-                .leftJoin(seller, product.seller)
+                .leftJoin(product.seller, seller)
                 .where(getExpressionProductSearch(productSearchRequest));
 
         return PageableExecutionUtils.getPage(products, pageable, () -> countQuery.fetch().size());
@@ -52,7 +49,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
         String categoryString = productSearchRequest.getCategory();
         if (categoryString != null) {
             Category category = Category.valueOf(categoryString);
-            booleanExpression.and(product.category.eq(category));
+            booleanExpression = booleanExpression.and(product.category.eq(category));
         }
 
         return booleanExpression;

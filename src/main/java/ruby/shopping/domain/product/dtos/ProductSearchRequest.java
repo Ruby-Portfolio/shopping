@@ -8,5 +8,5 @@ import lombok.Setter;
 public class ProductSearchRequest {
     private String keyword = "";
     private String category;
-    private int page = 0;
+    private int page = 1;
 }
