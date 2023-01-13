@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import ruby.shopping.common.ErrorResponse;
 import ruby.shopping.domain.account.Account;
 import ruby.shopping.domain.product.dtos.ProductCreateRequest;
+import ruby.shopping.domain.product.dtos.ProductItemDto;
 import ruby.shopping.domain.product.dtos.ProductSearchRequest;
 import ruby.shopping.domain.product.dtos.ProductsResponse;
 import ruby.shopping.security.LoginAccount;
@@ -67,7 +68,7 @@ public class ProductController {
     })
     @GetMapping
     public ProductsResponse getProducts(@Valid ProductSearchRequest productSearchRequest) {
-        Page<Product> products = productService.getProducts(productSearchRequest);
+        Page<ProductItemDto> products = productService.getProducts(productSearchRequest);
         return new ProductsResponse(products);
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ruby.shopping.domain.account.Account;
 import ruby.shopping.domain.product.dtos.ProductCreateRequest;
+import ruby.shopping.domain.product.dtos.ProductItemDto;
 import ruby.shopping.domain.product.dtos.ProductSearchRequest;
 import ruby.shopping.domain.product.enums.Category;
 import ruby.shopping.domain.seller.Seller;
@@ -37,7 +38,7 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public Page<Product> getProducts(ProductSearchRequest productSearchRequest) {
+    public Page<ProductItemDto> getProducts(ProductSearchRequest productSearchRequest) {
         return productRepository.findBySearch(productSearchRequest);
     }
 }
