@@ -8,7 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
+import ruby.shopping.domain.product.dtos.ProductItemDto;
 import ruby.shopping.domain.product.dtos.ProductSearchRequest;
+import ruby.shopping.domain.product.dtos.QProductItemDto;
 import ruby.shopping.domain.product.enums.Category;
 
 import java.util.List;
@@ -21,13 +23,17 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Page<Product> findBySearch(ProductSearchRequest productSearchRequest) {
+    public Page<ProductItemDto> findBySearch(ProductSearchRequest productSearchRequest) {
         int page = productSearchRequest.getPage() - 1;
         int pageSize = 10;
         Pageable pageable = PageRequest.of(page, pageSize);
 
-        List<Product> products = jpaQueryFactory.selectFrom(product)
-                .leftJoin(product.seller, seller).fetchJoin()
+        List<ProductItemDto> products = jpaQueryFactory
+                .select(
+                        new QProductItemDto(product.id, product.name, product.price, product.category, seller.sellerName)
+                )
+                .from(product)
+                .leftJoin(product.seller, seller)
                 .where(getExpressionProductSearch(productSearchRequest))
                 .limit(pageSize)
                 .offset(pageable.getOffset())

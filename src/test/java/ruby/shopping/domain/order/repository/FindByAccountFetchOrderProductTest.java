@@ -12,6 +12,7 @@ import ruby.shopping.domain.account.Account;
 import ruby.shopping.domain.account.AccountRepository;
 import ruby.shopping.domain.order.Order;
 import ruby.shopping.domain.order.OrderRepository;
+import ruby.shopping.domain.order.dtos.OrderResponse;
 import ruby.shopping.domain.order.enums.OrderState;
 import ruby.shopping.domain.orderProduct.OrderProduct;
 import ruby.shopping.domain.orderProduct.OrderProductRepository;
@@ -108,18 +109,15 @@ class FindByAccountFetchOrderProductTest {
     }
 
     @Test
-    @DisplayName("회원의 주문 목록 및 주문 상품 목록 조회")
+    @DisplayName("회원의 주문 목록 조회")
     void test_findByAccountFetchOrderProduct() {
-        List<Order> orders = orderRepository.findByAccountFetchOrderProduct(account);
+        List<OrderResponse> orders = orderRepository.findByAccountFetchOrderProduct(account);
 
-        boolean isOrderProducts = orders.stream()
-                .allMatch(order -> order.getOrderProducts().size() == orderProducts.size());
+        int totalPrice = orderProducts.stream()
+                .mapToInt(orderProduct -> (orderProduct.getCount() * orderProduct.getProduct().getPrice()))
+                .sum();
 
-        boolean isProducts = orders.stream()
-                .allMatch(order -> order.getOrderProducts().stream().allMatch(orderProduct -> orderProduct.getProduct() != null));
-
-        assertThat(orders.get(0).getId()).isEqualTo(order.getId());
-        assertThat(isOrderProducts).isTrue();
-        assertThat(isProducts).isTrue();
+        assertThat(orders.size()).isEqualTo(1);
+        assertThat(orders.get(0).getTotalPrice()).isEqualTo(totalPrice);
     }
 }

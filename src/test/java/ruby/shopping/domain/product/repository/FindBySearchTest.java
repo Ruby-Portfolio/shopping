@@ -13,6 +13,7 @@ import ruby.shopping.domain.account.Account;
 import ruby.shopping.domain.account.AccountRepository;
 import ruby.shopping.domain.product.Product;
 import ruby.shopping.domain.product.ProductRepository;
+import ruby.shopping.domain.product.dtos.ProductItemDto;
 import ruby.shopping.domain.product.dtos.ProductSearchRequest;
 import ruby.shopping.domain.product.enums.Category;
 import ruby.shopping.domain.seller.Seller;
@@ -89,7 +90,7 @@ class FindBySearchTest {
         productSearchRequest.setCategory(category);
         productSearchRequest.setPage(1);
 
-        Page<Product> productPage = productRepository.findBySearch(productSearchRequest);
+        Page<ProductItemDto> productPage = productRepository.findBySearch(productSearchRequest);
         assertThat(productPage.getNumber()).isEqualTo(0);
         assertThat(productPage.getTotalPages()).isEqualTo(0);
     }
@@ -104,7 +105,7 @@ class FindBySearchTest {
         productSearchRequest.setCategory(category);
         productSearchRequest.setPage(1);
 
-        Page<Product> productPage = productRepository.findBySearch(productSearchRequest);
+        Page<ProductItemDto> productPage = productRepository.findBySearch(productSearchRequest);
         assertThat(productPage.getNumber()).isEqualTo(0);
         assertThat(productPage.getTotalPages()).isEqualTo(0);
     }
@@ -119,15 +120,12 @@ class FindBySearchTest {
         productSearchRequest.setCategory(category);
         productSearchRequest.setPage(4);
 
-        Page<Product> productPage = productRepository.findBySearch(productSearchRequest);
+        Page<ProductItemDto> productPage = productRepository.findBySearch(productSearchRequest);
         assertThat(productPage.getContent().stream()
-                        .allMatch(product -> product.getName().contains(keyword))
+                        .allMatch(product -> product.getProductName().contains(keyword))
         ).isTrue();
         assertThat(productPage.getContent().stream()
-                .allMatch(product -> product.getDescription().contains(keyword))
-        ).isTrue();
-        assertThat(productPage.getContent().stream()
-                .allMatch(product -> product.getCategory().equals(Category.valueOf(category)))
+                .allMatch(product -> product.getCategory().equals(category))
         ).isTrue();
         assertThat(productPage.getNumber()).isEqualTo(3);
         assertThat(productPage.getTotalPages()).isEqualTo(4);
@@ -141,9 +139,9 @@ class FindBySearchTest {
         productSearchRequest.setCategory(category);
         productSearchRequest.setPage(4);
 
-        Page<Product> productPage = productRepository.findBySearch(productSearchRequest);
+        Page<ProductItemDto> productPage = productRepository.findBySearch(productSearchRequest);
         assertThat(productPage.getContent().stream()
-                .allMatch(product -> product.getCategory().equals(Category.valueOf(category)))
+                .allMatch(product -> product.getCategory().equals(category))
         ).isTrue();
         assertThat(productPage.getNumber()).isEqualTo(3);
         assertThat(productPage.getTotalPages()).isEqualTo(4);
@@ -157,12 +155,9 @@ class FindBySearchTest {
         productSearchRequest.setKeyword(keyword);
         productSearchRequest.setPage(4);
 
-        Page<Product> productPage = productRepository.findBySearch(productSearchRequest);
+        Page<ProductItemDto> productPage = productRepository.findBySearch(productSearchRequest);
         assertThat(productPage.getContent().stream()
-                .allMatch(product -> product.getName().contains(keyword))
-        ).isTrue();
-        assertThat(productPage.getContent().stream()
-                .allMatch(product -> product.getDescription().contains(keyword))
+                .allMatch(product -> product.getProductName().contains(keyword))
         ).isTrue();
         assertThat(productPage.getNumber()).isEqualTo(3);
         assertThat(productPage.getTotalPages()).isEqualTo(4);
@@ -174,7 +169,7 @@ class FindBySearchTest {
         ProductSearchRequest productSearchRequest = new ProductSearchRequest();
         productSearchRequest.setPage(4);
 
-        Page<Product> productPage = productRepository.findBySearch(productSearchRequest);
+        Page<ProductItemDto> productPage = productRepository.findBySearch(productSearchRequest);
         assertThat(productPage.getTotalElements()).isEqualTo(productRepository.count());
     }
 }

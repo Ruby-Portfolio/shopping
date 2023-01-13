@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import ruby.shopping.common.ErrorResponse;
 import ruby.shopping.domain.account.Account;
 import ruby.shopping.domain.order.dtos.OrderCreateRequest;
-import ruby.shopping.domain.order.dtos.OrdersResponse;
+import ruby.shopping.domain.order.dtos.OrderResponse;
 import ruby.shopping.security.LoginAccount;
 
 import javax.validation.Valid;
@@ -62,9 +62,10 @@ public class OrderController {
     })
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public OrdersResponse getOrders(@LoginAccount @Parameter(hidden = true) Account account) {
-        List<Order> orders = orderService.getOrders(account);
-        return new OrdersResponse(orders);
+    public List<OrderResponse> getOrders(@LoginAccount @Parameter(hidden = true) Account account) {
+//        List<Order> orders = orderService.getOrders(account);
+//        return new OrderResponse(orders);
+        return orderService.getOrders(account);
     }
 
     @Operation(summary = "주문 취소")
