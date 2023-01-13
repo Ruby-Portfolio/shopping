@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ruby.shopping.domain.account.Account;
 import ruby.shopping.domain.order.dtos.OrderCreateRequest;
+import ruby.shopping.domain.order.dtos.OrderResponse;
 import ruby.shopping.domain.order.enums.OrderState;
 import ruby.shopping.domain.order.exception.OrderNotFoundException;
 import ruby.shopping.domain.orderProduct.OrderProductService;
@@ -30,7 +31,7 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public List<Order> getOrders(Account account) {
+    public List<OrderResponse> getOrders(Account account) {
         return orderRepository.findByAccountFetchOrderProduct(account);
     }
 
